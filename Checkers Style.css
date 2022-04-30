@@ -1,0 +1,35 @@
+.border{
+    border-style: solid;
+    border-width: 3px;
+    border-color: black;
+    margin-left: auto;
+    margin-right: auto;
+}
+.dark-cell{
+    background-color: rgba(0,0,0,0.6);
+    width: 100px;
+    height: 100px;
+    font-size: 70px;
+    text-align: center;
+}
+.light-cell{
+    background-color: rgba(230, 230, 230, 0.7);
+    width: 100px;
+    height: 100px;
+    font-size: 70px;
+    text-align: center;
+}
+.selected{
+    background-color: burlywood;
+    width: 100px;
+    height: 100px;
+    font-size: 70px;
+    text-align: center;
+}
+.movement{
+    background-color: peachpuff;
+    width: 100px;
+    height: 100px;
+    font-size: 70px;
+    text-align: center;
+}
