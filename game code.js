@@ -20,6 +20,7 @@ let eatenPieceRow;
 let eatenPieceCol;
 let blueCount = 12;
 let redCount = 12;
+let takeAvailable = 0;
 
 class BoardData {
     constructor(pieces) {
@@ -159,11 +160,13 @@ function moveCurrentPiece(cPieceRow, cPieceCol, row, col) {
             document.getElementById(piece.row + '-' + piece.col).firstElementChild.remove();
             if (piece.player == RED_PLAYER) {
                 redCount--;
+                takeAvailable = 0;
                 if (redCount == 0) {
                     winner = "blue";
                 }
             } else if (piece.player == BLUE_PLAYER) {
                 blueCount--;
+                takeAvailable = 0;
                 if (blueCount == 0) {
                     winner = "red";
                 }
