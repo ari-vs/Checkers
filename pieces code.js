@@ -5,6 +5,7 @@ class Piece {
         this.type = type;
         this.player = player;
         this.eaten = 0;
+        this.canTake = 0;
     }
 
     getPossibleMoves() {
@@ -28,17 +29,14 @@ class Piece {
             const absoluteRow = absoluteMove[0];
             const absoluteCol = absoluteMove[1];
             if (absoluteRow >= 1 && absoluteRow <= 8 && absoluteCol >= 1 && absoluteCol <= 8) {
-                if (takeAvailable == 0) {
                     if (dataBoard.checkCell(pieces, absoluteRow, absoluteCol) == undefined) {
                         filteredMoves.push(absoluteMove);
                     } else if (this.player !== dataBoard.checkPlayer(pieces, absoluteRow, absoluteCol)) {
                         filteredMoves.push(absoluteMove);
                     }
-                } else if (takeAvailable > 0) {
                     if(dataBoard.getPiece(absoluteRow+1,absoluteCol+1) !== undefined || dataBoard.getPiece(absoluteRow+1, absoluteCol-1) !== undefined || dataBoard.getPiece(absoluteRow-1, absoluteCol+1) !== undefined|| dataBoard.getPiece(absoluteRow-1, absoluteCol-1) !== undefined){
                         filteredMoves.push(absoluteMove);
                     }
-                }
             }
         }
         console.log(filteredMoves);
@@ -56,16 +54,16 @@ class Piece {
             }
             if (this.player !== dataBoard.checkPlayer(pieces, this.row + 1, this.col + 1) && dataBoard.checkPlayer(pieces, this.row + 1, this.col + 1) !== undefined && dataBoard.checkCell(pieces, this.row + 2, this.col + 2) == undefined) {
                 result.push([2, 2]);
-                takeAvailable++;
                 if ((this.row + 2 < 9) && (this.row + 2 > 0) && (this.col + 2 < 9) && (this.col + 2 > 0)) {
                     document.getElementById((this.row + 1) + "-" + (this.col + 1)).classList.add("danger");
+                    this.canTake = 1;
                 }
             }
             if (this.player !== dataBoard.checkPlayer(pieces, this.row + 1, this.col - 1) && dataBoard.checkPlayer(pieces, this.row + 1, this.col - 1) !== undefined && dataBoard.checkCell(pieces, this.row + 2, this.col - 2) == undefined) {
                 result.push([2, -2]);
-                takeAvailable++;
                 if ((this.row + 2 < 9) && (this.row + 2 > 0) && (this.col - 2 < 9) && (this.col - 2 > 0)) {
                     document.getElementById((this.row + 1) + "-" + (this.col - 1)).classList.add("danger");
+                    this.canTake = 1;
                 }
             }
         } else if (this.player == 'blue') {
@@ -77,16 +75,16 @@ class Piece {
             }
             if (this.player !== dataBoard.checkPlayer(pieces, this.row - 1, this.col + 1) && dataBoard.checkPlayer(pieces, this.row - 1, this.col + 1) !== undefined && dataBoard.checkCell(pieces, this.row - 2, this.col + 2) == undefined) {
                 result.push([-2, 2]);
-                takeAvailable++;
                 if ((this.row - 2 < 9) && (this.row - 2 > 0) && (this.col + 2 < 9) && (this.col + 2 > 0)) {
                     document.getElementById((this.row - 1) + "-" + (this.col + 1)).classList.add("danger");
+                    this.canTake = 1;
                 }
             }
             if (this.player !== dataBoard.checkPlayer(pieces, this.row - 1, this.col - 1) && dataBoard.checkPlayer(pieces, this.row - 1, this.col - 1) !== undefined && dataBoard.checkCell(pieces, this.row - 2, this.col - 2) == undefined) {
                 result.push([-2, -2]);
-                takeAvailable++;
                 if ((this.row - 2 < 9) && (this.row - 2 > 0) && (this.col - 2 < 9) && (this.col - 2 > 0)) {
                     document.getElementById((this.row - 1) + "-" + (this.col - 1)).classList.add("danger");
+                    this.canTake = 1;
                 }
             }
         }

@@ -98,8 +98,24 @@ function onCellClick(event, row, col, table) {
             moveCurrentPiece(cPieceRow, cPieceCol, row, col);
             if (currentPlayer === 'red') {
                 currentPlayer = 'blue';
+                for (let piece of pieces){
+                    if (piece.player == BLUE_PLAYER){
+                        piece.getPossibleMoves();
+                        if(piece.canTake == 1){
+                            takeAvailable = 1;
+                        }
+                    }
+                }
             } else if (currentPlayer === 'blue') {
                 currentPlayer = 'red';
+                for (let piece of pieces){
+                    if (piece.player == RED_PLAYER){
+                        piece.getPossibleMoves();
+                        if(piece.canTake == 1){
+                            takeAvailable = 1;
+                        }
+                    }
+                }
             }
         }
 
@@ -111,6 +127,7 @@ function onCellClick(event, row, col, table) {
         if (winner == undefined) {
             if (hasMoved == 0) {
                 let movingPiece = dataBoard.getPiece(row, col);
+                if(movingPiece.canTake == 1 || takeAvailable == 0){
                 console.log('this cell is occupied by', movingPiece);
                 for (let piece of pieces) {
                     if (piece.row === row && piece.col === col) {
@@ -120,6 +137,9 @@ function onCellClick(event, row, col, table) {
                         }
                     }
                 }
+            } else {
+                alert("a taking move is available!");
+            }
             } else {
                 hasMoved = 0;
             }
@@ -161,12 +181,22 @@ function moveCurrentPiece(cPieceRow, cPieceCol, row, col) {
             if (piece.player == RED_PLAYER) {
                 redCount--;
                 takeAvailable = 0;
+                for (let piece of pieces) {
+                    if (piece.player == BLUE_PLAYER) {
+                        piece.canTake = 0;
+                    }
+                }
                 if (redCount == 0) {
                     winner = "blue";
                 }
             } else if (piece.player == BLUE_PLAYER) {
                 blueCount--;
                 takeAvailable = 0;
+                for (let piece of pieces) {
+                    if (piece.player = RED_PLAYER) {
+                        piece.canTake = 0;
+                    }
+                }
                 if (blueCount == 0) {
                     winner = "red";
                 }
