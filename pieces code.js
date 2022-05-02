@@ -57,6 +57,7 @@ class Piece {
                 if ((this.row + 2 < 9) && (this.row + 2 > 0) && (this.col + 2 < 9) && (this.col + 2 > 0)) {
                     document.getElementById((this.row + 1) + "-" + (this.col + 1)).classList.add("danger");
                     this.canTake = 1;
+                    takingMoves.push([2, 2]);
                 }
             }
             if (this.player !== dataBoard.checkPlayer(pieces, this.row + 1, this.col - 1) && dataBoard.checkPlayer(pieces, this.row + 1, this.col - 1) !== undefined && dataBoard.checkCell(pieces, this.row + 2, this.col - 2) == undefined) {
@@ -64,6 +65,7 @@ class Piece {
                 if ((this.row + 2 < 9) && (this.row + 2 > 0) && (this.col - 2 < 9) && (this.col - 2 > 0)) {
                     document.getElementById((this.row + 1) + "-" + (this.col - 1)).classList.add("danger");
                     this.canTake = 1;
+                    takingMoves.push([2, -2]);
                 }
             }
         } else if (this.player == 'blue') {
@@ -78,6 +80,7 @@ class Piece {
                 if ((this.row - 2 < 9) && (this.row - 2 > 0) && (this.col + 2 < 9) && (this.col + 2 > 0)) {
                     document.getElementById((this.row - 1) + "-" + (this.col + 1)).classList.add("danger");
                     this.canTake = 1;
+                    takingMoves.push([-2, 2]);
                 }
             }
             if (this.player !== dataBoard.checkPlayer(pieces, this.row - 1, this.col - 1) && dataBoard.checkPlayer(pieces, this.row - 1, this.col - 1) !== undefined && dataBoard.checkCell(pieces, this.row - 2, this.col - 2) == undefined) {
@@ -85,10 +88,10 @@ class Piece {
                 if ((this.row - 2 < 9) && (this.row - 2 > 0) && (this.col - 2 < 9) && (this.col - 2 > 0)) {
                     document.getElementById((this.row - 1) + "-" + (this.col - 1)).classList.add("danger");
                     this.canTake = 1;
+                    takingMoves.push([-2, -2]);
                 }
             }
         }
-        console.log(takeAvailable);
         console.log(result);
         return result;
     }

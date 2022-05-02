@@ -21,6 +21,9 @@ let eatenPieceCol;
 let blueCount = 12;
 let redCount = 12;
 let takeAvailable = 0;
+let possibleMovesAmount = [];
+let takingMoves = [];
+let outOfMovesCheck = [];
 
 class BoardData {
     constructor(pieces) {
@@ -95,28 +98,67 @@ function onCellClick(event, row, col, table) {
     let piecePlayer = dataBoard.getPiece(cPieceRow, cPieceCol).player;
     if ((currentPlayer == dataBoard.getPiece(row, col).player) || (currentPlayer == piecePlayer)) {
         if (event.currentTarget.classList.contains("movement")) {
-            moveCurrentPiece(cPieceRow, cPieceCol, row, col);
+            if (takeAvailable == 1) {
+                for (let takingMove of takingMoves) {
+                    let moveRowDifference = row - cPieceRow;
+                    let moveColDifference = col - cPieceCol;
+                    if (moveRowDifference == takingMove[0] && moveColDifference == takingMove[1]) {
+                        moveCurrentPiece(cPieceRow, cPieceCol, row, col);
+                    }
+                }
+            } else if (takeAvailable == 0) {
+                moveCurrentPiece(cPieceRow, cPieceCol, row, col);
+            }
+            if (takeAvailable == 0){
+                outOfMovesCheck = [];
             if (currentPlayer === 'red') {
                 currentPlayer = 'blue';
-                for (let piece of pieces){
-                    if (piece.player == BLUE_PLAYER){
-                        piece.getPossibleMoves();
-                        if(piece.canTake == 1){
+                possibleMovesAmount = [];
+                for (let piece of pieces) {
+                    piece.canTake = 0;
+                    if (piece.player == BLUE_PLAYER) {
+                        let turnOverCheck = piece.getPossibleMoves();
+                        possibleMovesAmount.push(turnOverCheck);
+                        if (piece.canTake == 1) {
                             takeAvailable = 1;
                         }
                     }
+                    if (piece.player == RED_PLAYER){
+                        let turnOverCheck = piece.getPossibleMoves();
+                        outOfMovesCheck.push(turnOverCheck);
+                    }
                 }
+                console.log(possibleMovesAmount);
+                console.log(outOfMovesCheck);
+                if (outOfMovesCheck.length == 0) {
+                    winner = 'red';
+                }
+                console.log(winner);
             } else if (currentPlayer === 'blue') {
                 currentPlayer = 'red';
-                for (let piece of pieces){
-                    if (piece.player == RED_PLAYER){
-                        piece.getPossibleMoves();
-                        if(piece.canTake == 1){
+                possibleMovesAmount = [];
+                for (let piece of pieces) {
+                    piece.canTake = 0;
+                    if (piece.player == RED_PLAYER) {
+                        let turnOverCheck = piece.getPossibleMoves();
+                        possibleMovesAmount.push(turnOverCheck);
+                        if (piece.canTake == 1) {
                             takeAvailable = 1;
                         }
                     }
+                    if (piece.player == BLUE_PLAYER){
+                        let turnOverCheck = piece.getPossibleMoves();
+                        outOfMovesCheck.push(turnOverCheck);
+                    }
                 }
+                console.log(possibleMovesAmount);
+                console.log(outOfMovesCheck);
+                if (outOfMovesCheck.length == 0) {
+                    winner = 'blue';
+                }
+                console.log(winner);
             }
+        }
         }
 
         for (let i = 0; i < BOARD_SIZE; i++) {
@@ -127,19 +169,19 @@ function onCellClick(event, row, col, table) {
         if (winner == undefined) {
             if (hasMoved == 0) {
                 let movingPiece = dataBoard.getPiece(row, col);
-                if(movingPiece.canTake == 1 || takeAvailable == 0){
-                console.log('this cell is occupied by', movingPiece);
-                for (let piece of pieces) {
-                    if (piece.row === row && piece.col === col) {
-                        possibleMoves = piece.getPossibleMoves();
-                        for (let possibleMove of possibleMoves) {
-                            table.rows[possibleMove[0] - 1].cells[possibleMove[1] - 1].classList.add('movement');
+                if (movingPiece.canTake == 1 || takeAvailable == 0) {
+                    console.log('this cell is occupied by', movingPiece);
+                    for (let piece of pieces) {
+                        if (piece.row === row && piece.col === col) {
+                            possibleMoves = piece.getPossibleMoves();
+                            for (let possibleMove of possibleMoves) {
+                                table.rows[possibleMove[0] - 1].cells[possibleMove[1] - 1].classList.add('movement');
+                            }
                         }
                     }
+                } else {
+                    alert("a taking move is available!");
                 }
-            } else {
-                alert("a taking move is available!");
-            }
             } else {
                 hasMoved = 0;
             }
@@ -168,6 +210,7 @@ function moveCurrentPiece(cPieceRow, cPieceCol, row, col) {
             document.getElementById(cPieceRow + '-' + cPieceCol).firstElementChild.remove();
             document.getElementById(row + '-' + col).appendChild(pieceImage);
             hasMoved = 1;
+            takeAvailable = 0;
         }
 
     for (let piece of pieces) {
@@ -181,6 +224,7 @@ function moveCurrentPiece(cPieceRow, cPieceCol, row, col) {
             if (piece.player == RED_PLAYER) {
                 redCount--;
                 takeAvailable = 0;
+                takingMoves = [];
                 for (let piece of pieces) {
                     if (piece.player == BLUE_PLAYER) {
                         piece.canTake = 0;
@@ -192,8 +236,9 @@ function moveCurrentPiece(cPieceRow, cPieceCol, row, col) {
             } else if (piece.player == BLUE_PLAYER) {
                 blueCount--;
                 takeAvailable = 0;
+                takingMoves = [];
                 for (let piece of pieces) {
-                    if (piece.player = RED_PLAYER) {
+                    if (piece.player == RED_PLAYER) {
                         piece.canTake = 0;
                     }
                 }
