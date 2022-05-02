@@ -107,49 +107,49 @@ function onCellClick(event, row, col, table) {
             } else if (takeAvailable == 0) {
                 moveCurrentPiece(cPieceRow, cPieceCol, row, col);
             }
-            if (takeAvailable == 0){
+            if (takeAvailable == 0) {
                 outOfMovesCheck = [];
                 possibleMovesAmount = [];
-            if (currentPlayer === 'red') {
-                currentPlayer = 'blue';
-                for (let piece of pieces) {
-                    piece.canTake = 0;
-                    if (piece.player == BLUE_PLAYER) {
-                        let turnOverCheck = piece.getPossibleMoves();
-                        if(turnOverCheck.length !== 0){
-                        possibleMovesAmount.push(turnOverCheck);
-                        }
-                        if (piece.canTake == 1) {
-                            takeAvailable = 1;
-                        }
-                    }
-                }
-                console.log(possibleMovesAmount);
-                if (possibleMovesAmount.length == 0) {
-                    winner = 'red';
-                }
-                console.log(winner);
-            } else if (currentPlayer === 'blue') {
-                currentPlayer = 'red';
-                for (let piece of pieces) {
-                    piece.canTake = 0;
-                    if (piece.player == RED_PLAYER) {
-                        let turnOverCheck = piece.getPossibleMoves();
-                        if(turnOverCheck.length !== 0){
-                        possibleMovesAmount.push(turnOverCheck);
-                        }
-                        if (piece.canTake == 1) {
-                            takeAvailable = 1;
+                if (currentPlayer === 'red') {
+                    currentPlayer = 'blue';
+                    for (let piece of pieces) {
+                        piece.canTake = 0;
+                        if (piece.player == BLUE_PLAYER) {
+                            let turnOverCheck = piece.getPossibleMoves();
+                            if (turnOverCheck.length !== 0) {
+                                possibleMovesAmount.push(turnOverCheck);
+                            }
+                            if (piece.canTake == 1) {
+                                takeAvailable = 1;
+                            }
                         }
                     }
+                    console.log(possibleMovesAmount);
+                    if (possibleMovesAmount.length == 0) {
+                        winner = 'red';
+                    }
+                    console.log(winner);
+                } else if (currentPlayer === 'blue') {
+                    currentPlayer = 'red';
+                    for (let piece of pieces) {
+                        piece.canTake = 0;
+                        if (piece.player == RED_PLAYER) {
+                            let turnOverCheck = piece.getPossibleMoves();
+                            if (turnOverCheck.length !== 0) {
+                                possibleMovesAmount.push(turnOverCheck);
+                            }
+                            if (piece.canTake == 1) {
+                                takeAvailable = 1;
+                            }
+                        }
+                    }
+                    console.log(possibleMovesAmount);
+                    if (possibleMovesAmount.length == 0) {
+                        winner = 'blue';
+                    }
+                    console.log(winner);
                 }
-                console.log(possibleMovesAmount);
-                if (possibleMovesAmount.length == 0) {
-                    winner = 'blue';
-                }
-                console.log(winner);
             }
-        }
         }
 
         for (let i = 0; i < BOARD_SIZE; i++) {
@@ -202,6 +202,19 @@ function moveCurrentPiece(cPieceRow, cPieceCol, row, col) {
             document.getElementById(row + '-' + col).appendChild(pieceImage);
             hasMoved = 1;
             takeAvailable = 0;
+            console.log(piece.player);
+            if (piece.player == BLUE_PLAYER && piece.row == 1) {
+                let replacedPiece = document.getElementById(piece.row + '-' + piece.col);
+                replacedPiece.firstElementChild.remove();
+                replacedPiece.innerHTML = '<img src="blue/royal.png" class="image">';
+                piece.type = ROYAL;
+            }
+            if (piece.player == RED_PLAYER && piece.row == 8) {
+                let replacedPiece = document.getElementById(piece.row + '-' + piece.col);
+                replacedPiece.firstElementChild.remove();
+                replacedPiece.innerHTML = '<img src="red/royal.png" class="image">';
+                piece.type = ROYAL;
+            }
         }
 
     for (let piece of pieces) {
