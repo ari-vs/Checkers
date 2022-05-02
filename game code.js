@@ -67,7 +67,6 @@ function setUpPieces() {
         for (let col = 1; col <= BOARD_SIZE; col++) {
             let cell = document.getElementById(row + "-" + col);
             cell.addEventListener('click', (event) => onCellClick(event, row, col, table));
-            console.log(cell);
             if ((row == 1) || (row == 2) || (row == 3)) {
                 if (document.getElementById(row + "-" + col).classList.contains("dark-cell")) {
                     result.push(new Piece(row, col, PEASANT, RED_PLAYER));
@@ -88,7 +87,6 @@ function setUpPieces() {
             }
         }
     }
-    console.log(result);
     return result;
 }
 
@@ -111,49 +109,42 @@ function onCellClick(event, row, col, table) {
             }
             if (takeAvailable == 0){
                 outOfMovesCheck = [];
+                possibleMovesAmount = [];
             if (currentPlayer === 'red') {
                 currentPlayer = 'blue';
-                possibleMovesAmount = [];
                 for (let piece of pieces) {
                     piece.canTake = 0;
                     if (piece.player == BLUE_PLAYER) {
                         let turnOverCheck = piece.getPossibleMoves();
+                        if(turnOverCheck.length !== 0){
                         possibleMovesAmount.push(turnOverCheck);
+                        }
                         if (piece.canTake == 1) {
                             takeAvailable = 1;
                         }
                     }
-                    if (piece.player == RED_PLAYER){
-                        let turnOverCheck = piece.getPossibleMoves();
-                        outOfMovesCheck.push(turnOverCheck);
-                    }
                 }
                 console.log(possibleMovesAmount);
-                console.log(outOfMovesCheck);
-                if (outOfMovesCheck.length == 0) {
+                if (possibleMovesAmount.length == 0) {
                     winner = 'red';
                 }
                 console.log(winner);
             } else if (currentPlayer === 'blue') {
                 currentPlayer = 'red';
-                possibleMovesAmount = [];
                 for (let piece of pieces) {
                     piece.canTake = 0;
                     if (piece.player == RED_PLAYER) {
                         let turnOverCheck = piece.getPossibleMoves();
+                        if(turnOverCheck.length !== 0){
                         possibleMovesAmount.push(turnOverCheck);
+                        }
                         if (piece.canTake == 1) {
                             takeAvailable = 1;
                         }
                     }
-                    if (piece.player == BLUE_PLAYER){
-                        let turnOverCheck = piece.getPossibleMoves();
-                        outOfMovesCheck.push(turnOverCheck);
-                    }
                 }
                 console.log(possibleMovesAmount);
-                console.log(outOfMovesCheck);
-                if (outOfMovesCheck.length == 0) {
+                if (possibleMovesAmount.length == 0) {
                     winner = 'blue';
                 }
                 console.log(winner);

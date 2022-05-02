@@ -22,7 +22,6 @@ class Piece {
             const absoluteCol = this.col + relativeMove[1];
             absoluteMoves.push([absoluteRow, absoluteCol]);
         }
-        console.log(absoluteMoves);
 
         let filteredMoves = [];
         for (let absoluteMove of absoluteMoves) {
@@ -92,7 +91,6 @@ class Piece {
                 }
             }
         }
-        console.log(result);
         return result;
     }
 }
