@@ -26,7 +26,6 @@ class Piece {
             const absoluteCol = this.col + relativeMove[1];
             absoluteMoves.push([absoluteRow, absoluteCol]);
         }
-        console.log(absoluteMoves);
 
 
         //filters out the moves which are outside of the board and makes sure the cells are empty
@@ -40,7 +39,6 @@ class Piece {
                 }
             }
         }
-        console.log(filteredMoves);
         return filteredMoves;
     }
 
@@ -163,7 +161,6 @@ class Piece {
                 break;
             }
         }
-        console.log(result);
         return result;
     }
 }

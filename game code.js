@@ -131,11 +131,9 @@ function onCellClick(event, row, col, table) {
                             }
                         }
                     }
-                    console.log(possibleMovesAmount);
                     if (possibleMovesAmount.length == 0) {
                         winner = 'red';
                     }
-                    console.log(winner);
                 } else if (currentPlayer === 'blue') {
                     currentPlayer = 'red';
                     //this does the same thing as what the last comment said except it is for the other player
@@ -151,11 +149,9 @@ function onCellClick(event, row, col, table) {
                             }
                         }
                     }
-                    console.log(possibleMovesAmount);
                     if (possibleMovesAmount.length == 0) {
                         winner = 'blue';
                     }
-                    console.log(winner);
                 }
             }
         }
@@ -175,7 +171,6 @@ function onCellClick(event, row, col, table) {
                 //these next 8 lines mark the possible movements of a piece
                 let movingPiece = dataBoard.getPiece(row, col);
                 if (movingPiece.canTake == 1 || takeAvailable == 0) {
-                    console.log('this cell is occupied by', movingPiece);
                     for (let piece of pieces) {
                         if (piece.row === row && piece.col === col) {
                             possibleMoves = piece.getPossibleMoves();
@@ -225,7 +220,6 @@ function moveCurrentPiece(cPieceRow, cPieceCol, row, col) {
             document.getElementById(row + '-' + col).appendChild(pieceImage);
             hasMoved = 1;
             takeAvailable = 0;
-            console.log(piece.player);
             //these two ifs change the type of the piece to a royal and change the image of it under the right conditions for each player
             if (piece.player == BLUE_PLAYER && piece.row == 1) {
                 let replacedPiece = document.getElementById(piece.row + '-' + piece.col);
@@ -287,5 +281,4 @@ function moveCurrentPiece(cPieceRow, cPieceCol, row, col) {
 window.addEventListener('load', () => {
     pieces = setUpPieces()
     dataBoard = new BoardData(pieces);
-    console.log(dataBoard);
 });
