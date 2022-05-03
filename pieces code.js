@@ -1,13 +1,16 @@
 class Piece {
     constructor(row, col, type, player) {
-        this.row = row;
-        this.col = col;
-        this.type = type;
-        this.player = player;
-        this.canTake = 0;
+        this.row = row; //row on which the piece exists
+        this.col = col; //col on which the piece exists
+        this.type = type; //whether the piece is a peasant or a royal
+        this.player = player; //which player the piece belongs to
+        this.canTake = 0; //whether or not the piece can take an enemy piece
     }
 
+
+    //method to get the possible moves of a given piece
     getPossibleMoves() {
+        //sets relativeMoves to be an array of possible moves for a piece by its type
         let relativeMoves;
         if (this.type === PEASANT) {
             relativeMoves = this.getPeasantRelativeMoves();
@@ -15,6 +18,8 @@ class Piece {
             relativeMoves = this.getRoyalRelativeMoves();
         }
 
+
+        //converts the relative moves to absolute cell coordinates on the table on the table
         let absoluteMoves = [];
         for (let relativeMove of relativeMoves) {
             const absoluteRow = this.row + relativeMove[0];
@@ -23,6 +28,8 @@ class Piece {
         }
         console.log(absoluteMoves);
 
+
+        //filters out the moves which are outside of the board and makes sure the cells are empty
         let filteredMoves = [];
         for (let absoluteMove of absoluteMoves) {
             const absoluteRow = absoluteMove[0];
@@ -30,18 +37,18 @@ class Piece {
             if (absoluteRow >= 1 && absoluteRow <= 8 && absoluteCol >= 1 && absoluteCol <= 8) {
                 if (dataBoard.checkCell(pieces, absoluteRow, absoluteCol) == undefined) {
                     filteredMoves.push(absoluteMove);
-                } else if (this.player !== dataBoard.checkPlayer(pieces, absoluteRow, absoluteCol)) {
-                    filteredMoves.push(absoluteMove);
                 }
-                // if (dataBoard.getPiece(absoluteRow + 1, absoluteCol + 1) !== undefined || dataBoard.getPiece(absoluteRow + 1, absoluteCol - 1) !== undefined || dataBoard.getPiece(absoluteRow - 1, absoluteCol + 1) !== undefined || dataBoard.getPiece(absoluteRow - 1, absoluteCol - 1) !== undefined) {
-                //     filteredMoves.push(absoluteMove);
-                // }
             }
         }
         console.log(filteredMoves);
         return filteredMoves;
     }
 
+
+    /*this function calculates the relative moves of a given peasant piece.
+    for both players if there is nothing in front of the piece on the diagonals in front of it, those are valid moves.
+    if there is something there and the square next up diagonally in that direction exists and is unoccupied then that is a valid move,
+    if that move exists the endangered piece is marked with the "danger" class and the moving piece gets canTake=1, the move gets pushed to takingMoves as well*/
     getPeasantRelativeMoves() {
         let result = [];
         if (this.player == 'red') {
@@ -94,6 +101,14 @@ class Piece {
         return result;
     }
 
+
+    /*calculates the relative moves of a given royal piece.
+    checks every direction individually and keeps going in each direction until either:
+    -it is blocked by an allied piece
+    -it is blocked by an enemy piece, the cell after which (in the same direction) is free.
+    this is then pushed to takingMoves and the endangered piece gets the class "danger", canTake of the piece is set to 1 after which the loop ends.
+    -it is blocked by an enemy piece the cell after which (in the same direction) is occupied by another piece or does not exist.
+    -the cell being checked is outside of the existing board*/
     getRoyalRelativeMoves() {
         let result = [];
         for (let i = 1; i < 9; i++) {

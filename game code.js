@@ -127,7 +127,7 @@ function onCellClick(event, row, col, table) {
                                 possibleMovesAmount.push(turnOverCheck);
                             }
                             if (piece.canTake == 1) {
-                                takeAvailable = 1;
+                                takeAvailable = 1; //if any piece of the player about to play their turn can take another piece this variable helps make sure that move is mandatory
                             }
                         }
                     }
