@@ -1,14 +1,13 @@
-.border{
+.table{
     border-style: solid;
-    border-width: 3px;
-    border-color: black;
-    /* margin-left: auto;
-    margin-right: auto; */
-    margin: auto;
-    outline-style: solid;
-    outline-width: 3px;
-    outline-color: orange;
-    outline-offset: 5px;
+    border-width: 10px;
+    border-color: rgb(116, 65, 0);
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+    outline-style: ridge;
+    outline-width: 15px;
+    outline-color: rgb(77, 50, 0);
 }
 
 .dark-cell{
